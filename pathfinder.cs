@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 
-namespace AardwolfDependences
+namespace AardwolfCore
 {
     public enum nodeStatus
     {

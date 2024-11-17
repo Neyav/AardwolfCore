@@ -1,4 +1,4 @@
-﻿namespace AardwolfDependences
+﻿namespace AardwolfCore
 {
     public struct RGBA
     {

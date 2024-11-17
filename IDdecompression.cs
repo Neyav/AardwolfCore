@@ -2,7 +2,7 @@
 //
 // Handles the decompression of data using ID Software's LZ compression and RLEW compression schemes that were popular during this time frame.
 
-namespace AardwolfDependences
+namespace AardwolfCore
 {
     // [Dash|RD] - This keeps being a problem so I'm just going to lay it out concisely here.
     //              x86 machines of the present and past are little endian, which means the least significant byte is stored first.

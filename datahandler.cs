@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace AardwolfDependences
+namespace AardwolfCore
 {    
     public struct mapDataHeader
     {

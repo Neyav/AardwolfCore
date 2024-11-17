@@ -4,7 +4,7 @@
 
 using System.Diagnostics;
 
-namespace AardwolfDependences
+namespace AardwolfCore
 {
     public enum mapObjectTypes
     {
