@@ -276,6 +276,11 @@ namespace AardwolfCore
         {
             get { return _VSWAPHeader; }
         }
+
+        public int numberOfTextures()
+        {
+            return _VSWAPHeader.spriteStart - 1;
+        }
         public Bitmap getTexture(int chunk)
         {
             if (chunk >= _VSWAPHeader.spriteStart)
