@@ -12,12 +12,15 @@ namespace AardwolfCore
         MAPOBJECT_DOOR = 1,
         MAPOBJECT_PUSHWALL = 2
     }
+
+    [Flags]
     public enum mapDirection
     {
-        DIR_NORTH = 0,
-        DIR_EAST = 1,
-        DIR_SOUTH = 2,
-        DIR_WEST = 3
+        DIR_NONE = 0,
+        DIR_NORTH = 1 << 0,
+        DIR_SOUTH = 1 << 1,
+        DIR_EAST = 1 << 2,
+        DIR_WEST = 1 << 3
     }
 
     public enum staticObjectInteraction
@@ -278,6 +281,28 @@ namespace AardwolfCore
             }
 
             return false;
+        }
+
+        public mapDirection isTileDoorAdjacent(int height, int width)
+        {
+            mapDirection direction = mapDirection.DIR_NONE;
+
+            foreach (dynamicMapObject obj in dynamicMapObjects)
+            {
+                if (obj.type == mapObjectTypes.MAPOBJECT_DOOR)
+                {
+                    if (obj.posheight == height - 1 && obj.poswidth == width)
+                        direction |= mapDirection.DIR_NORTH;
+                    else if (obj.posheight == height + 1 && obj.poswidth == width)
+                        direction |= mapDirection.DIR_SOUTH;
+                    else if (obj.posheight == height && obj.poswidth == width - 1)
+                        direction |= mapDirection.DIR_WEST;
+                    else if (obj.posheight == height && obj.poswidth == width + 1)
+                        direction |= mapDirection.DIR_EAST;
+                }
+            }
+
+            return direction;
         }
 
         public bool isDoorOpenable(int height, int width, bool goldKey, bool silverKey)
