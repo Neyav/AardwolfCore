@@ -259,6 +259,7 @@ namespace AardwolfCore
             return 0;
         }              
 
+        // TODO: Incomplete
         public Tuple<List<staticMapObject>, List<dynamicMapObject>> getFilteredMapObjects()
         {
             List<staticMapObject> filteredStaticObjects = new List<staticMapObject>();
@@ -301,6 +302,24 @@ namespace AardwolfCore
                         direction |= mapDirection.DIR_EAST;
                 }
             }
+
+            return direction;
+        }
+
+        // Get tile data returns 255 if the tile is outside the bounds of the map, so no need to check here.
+        // Doesn't act like a tile is blocking if it is an unactivated pushwall.
+        public mapDirection adjacentBlockingTiles(int height, int width)
+        {
+            mapDirection direction = mapDirection.DIR_NONE;
+
+            if (getTileData(height - 1, width) > 0 && !isTilePushable(height - 1, width))
+                direction |= mapDirection.DIR_NORTH;
+            if (getTileData(height + 1, width) > 0 && !isTilePushable(height + 1, width))
+                direction |= mapDirection.DIR_SOUTH;
+            if (getTileData(height, width - 1) > 0 && !isTilePushable(height, width - 1))
+                direction |= mapDirection.DIR_WEST;
+            if (getTileData(height, width + 1) > 0 && !isTilePushable(height, width + 1))
+                direction |= mapDirection.DIR_EAST;
 
             return direction;
         }
