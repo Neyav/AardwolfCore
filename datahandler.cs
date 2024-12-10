@@ -256,6 +256,15 @@ namespace AardwolfCore
             return levelName;
         }
 
+        public int getDoorTextureNumber()
+        {
+            if (!_isLoaded)
+                return 0;
+
+            // Door assests are the 8 before the sprites start.
+            return _VSWAPHeader.spriteStart - 8;
+        }
+
         public void prepareVSWAP()
         {
             _VSWAPHeader.chunkCount = BitConverter.ToUInt16(_VSWAP, 0);
