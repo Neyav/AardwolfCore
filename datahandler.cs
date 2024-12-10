@@ -261,7 +261,7 @@ namespace AardwolfCore
             if (!_isLoaded)
                 return 0;
 
-            // Door assests are the 8 before the sprites start.
+            // Door assets are the 8 before the sprites start.
             return _VSWAPHeader.spriteStart - 8;
         }
 
