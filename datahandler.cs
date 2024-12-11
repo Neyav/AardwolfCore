@@ -298,6 +298,10 @@ namespace AardwolfCore
         {
             return _VSWAPHeader.spriteStart - 1;
         }
+        public int numberOfSprites()
+        {
+            return _VSWAPHeader.soundStart - _VSWAPHeader.spriteStart;
+        }
         public Bitmap getTexture(int chunk)
         {
             if (chunk >= _VSWAPHeader.spriteStart)

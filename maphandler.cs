@@ -85,7 +85,7 @@ namespace AardwolfCore
         private bool _isLoaded = false;
         private bool _isSoD = false;
         private int _mapHeight;
-        private int _mapWidth;
+        private int _mapWidth;        
         public int playerSpawnHeight { get; private set; }
         public int playerSpawnWidth { get; private set; }
 
@@ -97,7 +97,7 @@ namespace AardwolfCore
             _mapWidth = mapWidth;
 
             // Reset the dynamic map objects list.
-            dynamicMapObjects.Clear();
+            dynamicMapObjects.Clear();            
 
             // Original map data is stored as a 16 bit word, we need to convert it to a byte array.
             levelTileMap = new byte[mapHeight][];
@@ -212,7 +212,7 @@ namespace AardwolfCore
             }
 
         }
-
+                
         // [Dash|RD] This is not referring to walls. It is purely a check on whether the tile is blocked by a static object.
         //           [TODO]: This same segment makes sense to refer to any dynamic objects as well, so we'll update it when they're in the game.
         public bool isFloorTileBlocked(int height, int width)
