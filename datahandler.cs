@@ -256,6 +256,14 @@ namespace AardwolfCore
             return levelName;
         }
 
+        public RGBA returnVGAFloorColor()
+        {
+            if (!_isLoaded)
+                return new RGBA();
+
+            return _paletteHandler.getPaletteColor(25); // Wolf3D Hardcodes the floor colour in. The ceiling colour changes based on the level.
+        }
+
         public int getDoorTextureNumber()
         {
             if (!_isLoaded)
