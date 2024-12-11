@@ -54,7 +54,7 @@ namespace AardwolfCore
             this.posheight = 0;
             this.keyNumber = 0;
             this.activated = false;
-            this.activatedDirection = mapDirection.DIR_NORTH;
+            this.activatedDirection = mapDirection.DIR_NONE;
             this.progress = 0;
         }
     }
@@ -215,7 +215,7 @@ namespace AardwolfCore
 
         // [Dash|RD] This is not referring to walls. It is purely a check on whether the tile is blocked by a static object.
         //           [TODO]: This same segment makes sense to refer to any dynamic objects as well, so we'll update it when they're in the game.
-        public bool isTileBlocked(int height, int width)
+        public bool isFloorTileBlocked(int height, int width)
         {
             foreach (staticMapObject obj in staticMapObjects)
             {

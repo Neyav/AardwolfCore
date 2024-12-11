@@ -160,7 +160,7 @@ namespace AardwolfCore
                         _mapTiles[heightPos, widthPos - 1].East = _mapTiles[heightPos, widthPos];
                     }
 
-                    if (_mapdata.isTileBlocked(heightPos, widthPos))
+                    if (_mapdata.isFloorTileBlocked(heightPos, widthPos))
                     {
                         _mapTiles[heightPos, widthPos].blocked = true;
                     }
