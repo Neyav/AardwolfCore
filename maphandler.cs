@@ -129,6 +129,9 @@ namespace AardwolfCore
                 // Determine which type of door.
                 byte doorType = 0;
 
+                dynamicMapObject newObject = new dynamicMapObject();
+                newObject.type = mapObjectTypes.MAPOBJECT_DOOR;
+
                 switch (tileNumber)
                 {
                     case 90:
@@ -137,6 +140,7 @@ namespace AardwolfCore
                     case 96:
                     case 98:
                     case 100:
+                        newObject.activatedDirection = mapDirection.DIR_NORTH;
                         doorType = (byte)((tileNumber - 90) / 2);
                         break;
                     case 91:
@@ -145,12 +149,11 @@ namespace AardwolfCore
                     case 97:
                     case 99:
                     case 101:
+                        newObject.activatedDirection = mapDirection.DIR_EAST;
                         doorType = (byte)((tileNumber - 91) / 2);
                         break;
                 }
-
-                dynamicMapObject newObject = new dynamicMapObject();
-                newObject.type = mapObjectTypes.MAPOBJECT_DOOR;
+                                
                 newObject.spawnwidth = width;
                 newObject.spawnheight = height;
                 newObject.poswidth = width;
@@ -322,6 +325,20 @@ namespace AardwolfCore
                 direction |= mapDirection.DIR_EAST;
 
             return direction;
+        }
+
+        public dynamicMapObject getDoorObject(int height, int width)
+        {
+            foreach (dynamicMapObject obj in dynamicMapObjects)
+            {
+                if (obj.poswidth == width && obj.posheight == height)
+                {
+                    if (obj.type == mapObjectTypes.MAPOBJECT_DOOR)
+                        return obj;
+                }
+            }
+
+            return new dynamicMapObject();
         }
 
         public bool isDoorOpenable(int height, int width, bool goldKey, bool silverKey)
