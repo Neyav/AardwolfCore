@@ -12,6 +12,7 @@ namespace AardwolfCore
         private int _difficulty;
         private bool _isSOD;
         private dataHandler _dataHandler;
+        maphandler _mapData;
         
 
         public int getLevels()
@@ -25,7 +26,16 @@ namespace AardwolfCore
 
         public void loadLevel(int level, int difficulty)
         {
-            
+            if (level > _dataHandler.getLevels())
+            {
+                return;
+            }
+
+            _mapData = new maphandler(_isSOD);
+            _mapData.importMapData(_dataHandler.getLevelData(level), _dataHandler.levelHeight(level), _dataHandler.levelWidth(level));
+
+            _mapnumber = level;
+            _difficulty = difficulty;
         }
 
         // Not necessary for a game, just for testing
@@ -47,7 +57,9 @@ namespace AardwolfCore
             _dataHandler.loadAllData(_isSOD);
 
             _dataHandler.parseLevelData();
-            _dataHandler.prepareVSWAP();            
+            _dataHandler.prepareVSWAP();
+
+            _mapData = null;
         }
     }
 }
