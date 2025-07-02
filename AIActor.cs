@@ -10,6 +10,7 @@ namespace AardwolfCore
     {
         public int Health { get; set; }
         public int MaxHealth { get; set; }
+        public int Angle { get; set; }
         public float WidthPosition { get; set; }
         public float HeightPosition { get; set; }
 
