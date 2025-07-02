@@ -77,11 +77,36 @@ namespace AardwolfCore
         }
     }
 
+    public struct actorMapObject
+    {
+        public int poswidth;
+        public int posheight;
+        public int angle;
+        public string actorType;
+        public actorMapObject(int width, int height, int angle, string id)
+        {
+            this.poswidth = width;
+            this.posheight = height;
+            this.actorType = id;
+            this.angle = angle;
+
+            if (this.angle < 0)
+            {
+                this.angle += 360; // Ensure angle is positive
+            }
+            else if (this.angle >= 360)
+            {
+                this.angle -= 360; // Ensure angle is within 0-359 degrees
+            }
+        }
+    }
+
     public class maphandler
     {
         private byte[][] levelTileMap;
         private List<dynamicMapObject> dynamicMapObjects;
         private List<staticMapObject> staticMapObjects;
+        private List<actorMapObject> actorMapObjects;
         private bool _isLoaded = false;
         private bool _isSoD = false;
         private int _mapHeight;
@@ -173,6 +198,19 @@ namespace AardwolfCore
             }
         }
 
+        private int angleFromSpawnID(int spawnID)
+        {
+            // Convert the spawn ID to an angle.
+            // The spawn ID is 19-22, which corresponds to angles 0, 90, 180, and 270 degrees.
+            switch (spawnID)
+            {
+                case 0: return 180;   // North
+                case 1: return 90;  // East
+                case 2: return 0; // South
+                case 3: return 270; // West
+                default: return 0;  // Invalid spawn ID
+            }
+        }
         public void spawnMapObject(int objNumber, int height, int width)
         {
             if (objNumber == 98) // It's a pushwall.
@@ -212,6 +250,40 @@ namespace AardwolfCore
                 }
 
                 staticMapObjects.Add(newObject);
+            }
+            else if (objNumber > 98)
+            {
+                actorMapObject newActor;
+                // It's an actor.
+                switch (objNumber)
+                {
+                    case 180: // Hard Skill Guard
+                    case 181:
+                    case 182:
+                    case 183:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 180), "GuardStandHard");
+                        actorMapObjects.Add(newActor);
+                        break;
+
+                    case 144: // Medium Skill Guard
+                    case 145:
+                    case 146:
+                    case 147:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 144), "GuardStandMedium");
+                        actorMapObjects.Add(newActor);
+                        break;
+
+                    case 108: // Easy Skill Guard
+                    case 109:
+                    case 110:
+                    case 111:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 108), "GuardStandEasy");
+                        actorMapObjects.Add(newActor);
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
         }
@@ -260,7 +332,19 @@ namespace AardwolfCore
             }
 
             return 0;
-        }              
+        }
+        
+        public actorMapObject getAIactorObject(int height, int width)
+        {
+            foreach (actorMapObject obj in actorMapObjects)
+            {
+                if (obj.poswidth == width && obj.posheight == height)
+                {
+                    return obj;
+                }
+            }
+            return new actorMapObject();
+        }
 
         // TODO: Incomplete
         public Tuple<List<staticMapObject>, List<dynamicMapObject>> getFilteredMapObjects()
@@ -397,6 +481,7 @@ namespace AardwolfCore
         {
             dynamicMapObjects = new List<dynamicMapObject>();
             staticMapObjects = new List<staticMapObject>();
+            actorMapObjects = new List<actorMapObject>();
 
             _isSoD = a_isSoD;
             _mapHeight = 0;
