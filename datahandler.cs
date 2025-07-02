@@ -75,6 +75,20 @@ namespace AardwolfCore
 
         // Palette translation handler.
         palettehandler _paletteHandler;
+        int[] _vgaCeilingColours = {
+    // Episode 1
+    29, 29, 29, 29, 29, 29, 29, 29, 29, 191,
+    // Episode 2
+    78, 78, 78, 29, 141, 78, 29, 45, 29, 141,
+    // Episode 3
+    29, 29, 29, 29, 29, 45, 221, 29, 29, 152,
+    // Episode 4
+    29, 157, 45, 221, 221, 157, 45, 77, 29, 221,
+    // Episode 5
+    125, 29, 45, 45, 221, 215, 29, 29, 29, 45,
+    // Episode 6
+    29, 29, 29, 29, 221, 221, 125, 221, 221, 221 };
+
 
         bool _isLoaded = false;
         bool _isSOD = false;
@@ -262,6 +276,16 @@ namespace AardwolfCore
                 return new RGBA();
 
             return _paletteHandler.getPaletteColor(25); // Wolf3D Hardcodes the floor colour in. The ceiling colour changes based on the level.
+        }
+
+        public RGBA returnVGACeilingColor(int level)
+        {
+            if (!_isLoaded)
+                return new RGBA();
+            if (level < 0 || level >= _vgaCeilingColours.Length)
+                return new RGBA();
+            // Return the ceiling colour for the level.
+            return _paletteHandler.getPaletteColor((byte)_vgaCeilingColours[level]);
         }
 
         public int getDoorTextureNumber()
