@@ -257,6 +257,7 @@ namespace AardwolfCore
                 // It's an actor.
                 switch (objNumber)
                 {
+                    // --= Guards =-- //
                     case 180: // Hard Skill Guard
                     case 181:
                     case 182:
@@ -278,6 +279,32 @@ namespace AardwolfCore
                     case 110:
                     case 111:
                         newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 108), "GuardStandEasy");
+                        actorMapObjects.Add(newActor);
+                        break;
+
+                    case 184: // Hard Skill Guard Patrol
+                    case 185:
+                    case 186:
+                    case 187:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 184), "GuardPathHard");
+                        actorMapObjects.Add(newActor);
+                        break;
+                    case 148: // Medium Skill Guard Patrol
+                    case 149:
+                    case 150:
+                    case 151:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 148), "GuardPathMedium");
+                        actorMapObjects.Add(newActor);
+                        break;
+                    case 112: // Easy Skill Guard Patrol
+                    case 113:
+                    case 114:
+                    case 115:
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 112), "GuardPathEasy");
+                        actorMapObjects.Add(newActor);
+                        break;
+                    case 124: // Dead Guard
+                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 124), "GuardDead");
                         actorMapObjects.Add(newActor);
                         break;
 
