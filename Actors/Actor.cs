@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AardwolfCore
+namespace AardwolfCore.Actors
 {
-    public class AIActor
+    public class Actor
     {
         public int Health { get; set; }
         public int MaxHealth { get; set; }
