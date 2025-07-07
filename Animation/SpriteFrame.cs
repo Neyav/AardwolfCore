@@ -47,24 +47,29 @@ namespace AardwolfCore.Animation
 
         public int getFrame(float spriteAngle, float viewerAngle)
         {
-            // If the sprite does not rotate, return the first frame
             if (!_SpriteRotates)
-            {
                 return _SpriteTexture[0];
-            }
-            // Calculate the relative angle
-            float relativeAngle = (spriteAngle - viewerAngle + 360) % 360;
 
-            // Determine the frame index based on the relative angle
-            int viewFrame = (int)(relativeAngle / 45) % 8;
+            const int frameCount = 8;
+            const float sliceSize = 360f / frameCount;  // 45°
+            const float halfSlice = sliceSize / 2f;  // 22.5°
 
-            if (viewFrame < 0)
-                viewFrame = 0;
-            else if (viewFrame > 7)
-                viewFrame = 8;
+            // Compute relative angle so it grows counter-clockwise:
+            float rel = (spriteAngle - viewerAngle + 360f) % 360f;
 
-            return _SpriteTexture[viewFrame];            
+            // Round to nearest slice:
+            rel = (rel + halfSlice) % 360f;
+
+            // Map into 0…7
+            int idx = (int)(rel / sliceSize);
+
+            // Safety clamp
+            if (idx < 0) idx = 0;
+            else if (idx >= frameCount) idx = frameCount - 1;
+
+            return _SpriteTexture[idx];
         }
+
         public bool calculateNextFrame(int timeDelta)
         {
             if (_SpriteTime == 0)
