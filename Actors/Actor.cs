@@ -15,7 +15,8 @@ namespace AardwolfCore.Actors
         public float HeightPosition { get; set; }
         // SkillSetting is used to determine the difficulty or skill level of the actor
         // This is static so it can be set globally for all actors.
-        public static int SkillSetting { get; set; } = 0; // Default skill setting
+        protected static int SkillSetting { get; set; }
 
+        protected static bool _isSoD; // Static variable to determine if the game is SOD (Spear of Destiny)
     }
 }

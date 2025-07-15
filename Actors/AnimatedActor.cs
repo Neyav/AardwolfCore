@@ -10,7 +10,7 @@ namespace AardwolfCore.Actors
 {
     public class AnimatedActor : Actor
     {
-        public SpriteAnimation _spriteAnimation { get; set; }
+        protected SpriteAnimation _spriteAnimation { get; set; }
 
         public int getAnimationFrame(float Yaw, double timeDelta)
         {
