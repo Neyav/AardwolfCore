@@ -75,7 +75,7 @@ namespace AardwolfCore
 
         // Palette translation handler.
         palettehandler _paletteHandler;
-        int[] _vgaCeilingColours = {
+        int[] _vgaCeilingColoursWolf3D = {
     // Episode 1
     29, 29, 29, 29, 29, 29, 29, 29, 29, 191,
     // Episode 2
@@ -88,7 +88,10 @@ namespace AardwolfCore
     125, 29, 45, 45, 221, 215, 29, 29, 29, 45,
     // Episode 6
     29, 29, 29, 29, 221, 221, 125, 221, 221, 221 };
-
+        int[] _vgaCeilingColoursSoD = {
+    111, 79, 29, 222, 223, 46, 127, 158, 174, 127,
+    29, 222, 223, 222, 223, 222, 225, 220, 46, 29, 220
+    };
 
         bool _isLoaded = false;
         bool _isSOD = false;
@@ -282,10 +285,22 @@ namespace AardwolfCore
         {
             if (!_isLoaded)
                 return new RGBA();
-            if (level < 0 || level >= _vgaCeilingColours.Length)
+            if (level < 0 || level >= _vgaCeilingColoursWolf3D.Length && !_isSOD)
                 return new RGBA();
-            // Return the ceiling colour for the level.
-            return _paletteHandler.getPaletteColor((byte)_vgaCeilingColours[level]);
+            if (level < 0 || level >= _vgaCeilingColoursSoD.Length && _isSOD)
+                return new RGBA();
+
+            // If we're in SOD, use the SOD ceiling colours.
+            if (_isSOD)
+            {
+                // Return the ceiling colour for the level.
+                return _paletteHandler.getPaletteColor((byte)_vgaCeilingColoursSoD[level]);
+            }
+            else
+            {
+                // Return the ceiling colour for the level.
+                return _paletteHandler.getPaletteColor((byte)_vgaCeilingColoursWolf3D[level]);
+            }
         }
 
         public int getDoorTextureNumber()
