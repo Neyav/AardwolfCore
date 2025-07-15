@@ -10,7 +10,9 @@ namespace AardwolfCore.Animation
     {
         Dictionary<string, SpriteFrame> _spriteFrames;
         string _CurrentFrame;
+        const float FrameTimeConversionFactor = 1000f / 70f; // Convert spriteTime from 70hz to milliseconds
 
+        // Probably depreciated, kept for now, delete later.
         public void addFrame (string frameName, int front, int frontLeft, int left, int backLeft, int back, int backRight, int right, int frontRight, int spriteTime, string nextSprite)
         {
             SpriteFrame frame = new SpriteFrame();
@@ -18,10 +20,17 @@ namespace AardwolfCore.Animation
                 (int)(1000f / 70f * spriteTime), nextSprite); // Convert spriteTime from 70hz to milliseconds
             _spriteFrames.Add(frameName, frame);
         }
+        public void addSequenceFrame(string frameName, int startSprite, int spriteTime, string nextSprite)
+        {
+            SpriteFrame frame = new SpriteFrame();
+            frame.setFrames(startSprite, startSprite + 1, startSprite + 2, startSprite + 3, startSprite + 4, startSprite + 5,
+                startSprite + 6, startSprite + 7, (int)(FrameTimeConversionFactor * spriteTime), nextSprite); // Convert spriteTime from 70hz to milliseconds
+            _spriteFrames.Add(frameName, frame);
+        }
         public void addFrame (string frameName, int front, int spriteTime, string nextSprite)
         {
             SpriteFrame frame = new SpriteFrame();
-            frame.setFrames(front, (int)(1000f / 70f * spriteTime), nextSprite);
+            frame.setFrames(front, (int)(FrameTimeConversionFactor * spriteTime), nextSprite);
             _spriteFrames.Add (frameName, frame);
         }
 

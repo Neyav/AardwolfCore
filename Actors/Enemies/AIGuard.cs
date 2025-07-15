@@ -27,22 +27,15 @@ namespace AardwolfCore.Actors.Enemies
             }
 
             // Set default sprite frames for the guard
-            _spriteAnimation.addFrame("s_grdstand", grdSprStart, grdSprStart + 1, grdSprStart + 2, grdSprStart + 3,
-                            grdSprStart + 4, grdSprStart + 5, grdSprStart + 6, grdSprStart + 7, 0, "s_grdstand");
+            _spriteAnimation.addSequenceFrame("s_grdstand", grdSprStart, 0, "s_grdstand");
 
             // Walking animation frames.
-            _spriteAnimation.addFrame("s_grdpath1", grdSprStart + 8, grdSprStart + 9, grdSprStart + 10, grdSprStart + 11,
-                            grdSprStart + 12, grdSprStart + 13, grdSprStart + 14, grdSprStart + 15, 20, "s_grdpath1s");
-            _spriteAnimation.addFrame("s_grdpath1s", grdSprStart + 8, grdSprStart + 9, grdSprStart + 10, grdSprStart + 11,
-                            grdSprStart + 12, grdSprStart + 13, grdSprStart + 14, grdSprStart + 15, 5, "s_grdpath2");
-            _spriteAnimation.addFrame("s_grdpath2", grdSprStart + 16, grdSprStart + 17, grdSprStart + 18, grdSprStart + 19,
-                            grdSprStart + 20, grdSprStart + 21, grdSprStart + 22, grdSprStart + 23, 15, "s_grdpath3");
-            _spriteAnimation.addFrame("s_grdpath3", grdSprStart + 24, grdSprStart + 25, grdSprStart + 26, grdSprStart + 27,
-                            grdSprStart + 28, grdSprStart + 29, grdSprStart + 30, grdSprStart + 31, 20, "s_grdpath3s");
-            _spriteAnimation.addFrame("s_grdpath3s", grdSprStart + 24, grdSprStart + 25, grdSprStart + 26, grdSprStart + 27,
-                            grdSprStart + 28, grdSprStart + 29, grdSprStart + 30, grdSprStart + 31, 5, "s_grdpath4");
-            _spriteAnimation.addFrame("s_grdpath4", grdSprStart + 32, grdSprStart + 33, grdSprStart + 34, grdSprStart + 35,
-                            grdSprStart + 36, grdSprStart + 37, grdSprStart + 38, grdSprStart + 39, 15, "s_grdpath1");
+            _spriteAnimation.addSequenceFrame("s_grdpath1", grdSprStart + 8, 20, "s_grdpath1s");
+            _spriteAnimation.addSequenceFrame("s_grdpath1s", grdSprStart + 8, 5, "s_grdpath2");
+            _spriteAnimation.addSequenceFrame("s_grdpath2", grdSprStart + 16, 15, "s_grdpath3");
+            _spriteAnimation.addSequenceFrame("s_grdpath3", grdSprStart + 24, 20, "s_grdpath3s");
+            _spriteAnimation.addSequenceFrame("s_grdpath3s", grdSprStart + 24, 5, "s_grdpath4");
+            _spriteAnimation.addSequenceFrame("s_grdpath4", grdSprStart + 32, 15, "s_grdpath1");
 
             // Pain frames.
             _spriteAnimation.addFrame("s_grdpain1", grdSprStart + 40, 10, "s_grdchase1");
@@ -54,18 +47,12 @@ namespace AardwolfCore.Actors.Enemies
             _spriteAnimation.addFrame("s_grdshoot3", grdSprStart + 48, 20, "s_grdchase1");
 
             // Chase frames.
-            _spriteAnimation.addFrame("s_grdchase1", grdSprStart + 8, grdSprStart + 9, grdSprStart + 10, grdSprStart + 11,
-                            grdSprStart + 12, grdSprStart + 13, grdSprStart + 14, grdSprStart + 15, 10, "s_grdchase1s");
-            _spriteAnimation.addFrame("s_grdchase1s", grdSprStart + 8, grdSprStart + 9, grdSprStart + 10, grdSprStart + 11,
-                            grdSprStart + 12, grdSprStart + 13, grdSprStart + 14, grdSprStart + 15, 3, "s_grdchase2");
-            _spriteAnimation.addFrame("s_grdchase2", grdSprStart + 16, grdSprStart + 17, grdSprStart + 18, grdSprStart + 19,
-                            grdSprStart + 20, grdSprStart + 21, grdSprStart + 22, grdSprStart + 23, 8, "s_grdchase3");
-            _spriteAnimation.addFrame("s_grdchase3", grdSprStart + 24, grdSprStart + 25, grdSprStart + 26, grdSprStart + 27,
-                            grdSprStart + 28, grdSprStart + 29, grdSprStart + 30, grdSprStart + 31, 10, "s_grdchase3s");
-            _spriteAnimation.addFrame("s_grdchase3s", grdSprStart + 24, grdSprStart + 25, grdSprStart + 26, grdSprStart + 27,
-                            grdSprStart + 28, grdSprStart + 29, grdSprStart + 30, grdSprStart + 31, 3, "s_grdchase4");
-            _spriteAnimation.addFrame("s_grdchase4", grdSprStart + 32, grdSprStart + 33, grdSprStart + 34, grdSprStart + 35,
-                            grdSprStart + 36, grdSprStart + 37, grdSprStart + 38, grdSprStart + 39, 8, "s_grdchase1");
+            _spriteAnimation.addSequenceFrame("s_grdchase1", grdSprStart + 8, 10, "s_grdchase1s");
+            _spriteAnimation.addSequenceFrame("s_grdchase1s", grdSprStart + 8, 3, "s_grdchase2");
+            _spriteAnimation.addSequenceFrame("s_grdchase2", grdSprStart + 16, 8, "s_grdchase3");
+            _spriteAnimation.addSequenceFrame("s_grdchase3", grdSprStart + 24, 10, "s_grdchase3s");
+            _spriteAnimation.addSequenceFrame("s_grdchase3s", grdSprStart + 24, 3, "s_grdchase4");
+            _spriteAnimation.addSequenceFrame("s_grdchase4", grdSprStart + 32, 8, "s_grdchase1");
 
             // Death Frames.
             _spriteAnimation.addFrame("s_grddie1", grdSprStart + 41, 10, "s_grddie2");
