@@ -16,8 +16,8 @@ namespace AardwolfCore.Actors.Enemies
             Health = 25;
             MaxHealth = 25;
             Angle = angle;
-            WidthPosition = widthPosition;
-            HeightPosition = heightPosition;
+            WidthPosition = widthPosition + 0.5f;
+            HeightPosition = heightPosition + 0.5f;
 
             int grdSprStart = 50; // Default sprite start for guards
 
