@@ -31,6 +31,9 @@ namespace AardwolfCore
                 return;
             }
 
+            _mapnumber = level;
+            _difficulty = difficulty;
+
             _mapData = new maphandler(_isSOD);
             _mapData.importMapData(_dataHandler.getLevelData(level), _dataHandler.levelHeight(level), _dataHandler.levelWidth(level));
 
