@@ -3,6 +3,8 @@
 //               This is all rough planning so far.
 
 using System.Diagnostics;
+using AardwolfCore.Actors;
+using AardwolfCore.Actors.Enemies;
 
 namespace AardwolfCore
 {
@@ -77,36 +79,12 @@ namespace AardwolfCore
         }
     }
 
-    public struct actorMapObject
-    {
-        public int poswidth;
-        public int posheight;
-        public int angle;
-        public string actorType;
-        public actorMapObject(int width, int height, int angle, string id)
-        {
-            this.poswidth = width;
-            this.posheight = height;
-            this.actorType = id;
-            this.angle = angle;
-
-            if (this.angle < 0)
-            {
-                this.angle += 360; // Ensure angle is positive
-            }
-            else if (this.angle >= 360)
-            {
-                this.angle -= 360; // Ensure angle is within 0-359 degrees
-            }
-        }
-    }
-
     public class maphandler
     {
         private byte[][] levelTileMap;
         private List<dynamicMapObject> dynamicMapObjects;
         private List<staticMapObject> staticMapObjects;
-        private List<actorMapObject> actorMapObjects;
+        private List<AnimatedActor> animatedActors;
         private bool _isLoaded = false;
         private bool _isSoD = false;
         private int _mapHeight;
@@ -253,7 +231,7 @@ namespace AardwolfCore
             }
             else if (objNumber > 98)
             {
-                actorMapObject newActor;
+                AnimatedActor newActor;
                 // It's an actor.
                 switch (objNumber)
                 {
@@ -262,50 +240,54 @@ namespace AardwolfCore
                     case 181:
                     case 182:
                     case 183:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 180), "GuardStandHard");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 180));
+                        animatedActors.Add(newActor);
                         break;
 
                     case 144: // Medium Skill Guard
                     case 145:
                     case 146:
                     case 147:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 144), "GuardStandMedium");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 144));
+                        animatedActors.Add(newActor);
                         break;
 
                     case 108: // Easy Skill Guard
                     case 109:
                     case 110:
                     case 111:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 108), "GuardStandEasy");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 108));
+                        animatedActors.Add(newActor);
                         break;
 
                     case 184: // Hard Skill Guard Patrol
                     case 185:
                     case 186:
                     case 187:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 184), "GuardPathHard");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 184));
+                        newActor.forceAnimationFrame("s_grdpath1");
+                        animatedActors.Add(newActor);
                         break;
                     case 148: // Medium Skill Guard Patrol
                     case 149:
                     case 150:
                     case 151:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 148), "GuardPathMedium");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 148));
+                        newActor.forceAnimationFrame("s_grdpath1");
+                        animatedActors.Add(newActor);
                         break;
                     case 112: // Easy Skill Guard Patrol
                     case 113:
                     case 114:
                     case 115:
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 112), "GuardPathEasy");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 112));
+                        newActor.forceAnimationFrame("s_grdpath1");
+                        animatedActors.Add(newActor);
                         break;
                     case 124: // Dead Guard
-                        newActor = new actorMapObject(width, height, angleFromSpawnID(objNumber - 124), "GuardDead");
-                        actorMapObjects.Add(newActor);
+                        newActor = new AIGuard(width, height, angleFromSpawnID(objNumber - 124));
+                        newActor.forceAnimationFrame("s_grddie4");
+                        animatedActors.Add(newActor);
                         break;
 
                     default:
@@ -360,17 +342,17 @@ namespace AardwolfCore
 
             return 0;
         }
-        
-        public actorMapObject getAIactorObject(int height, int width)
+ 
+        public AnimatedActor getActorAtPosition(int height, int width)
         {
-            foreach (actorMapObject obj in actorMapObjects)
+            foreach (AnimatedActor actor in animatedActors)
             {
-                if (obj.poswidth == width && obj.posheight == height)
+                if ((int)actor.HeightPosition == height && (int)actor.WidthPosition == width)
                 {
-                    return obj;
+                    return actor;
                 }
             }
-            return new actorMapObject();
+            return null;
         }
 
         // TODO: Incomplete
@@ -513,7 +495,7 @@ namespace AardwolfCore
         {
             dynamicMapObjects = new List<dynamicMapObject>();
             staticMapObjects = new List<staticMapObject>();
-            actorMapObjects = new List<actorMapObject>();
+            animatedActors = new List<AnimatedActor>();
 
             _isSoD = a_isSoD;
             _mapHeight = 0;

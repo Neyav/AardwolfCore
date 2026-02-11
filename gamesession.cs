@@ -13,7 +13,6 @@ namespace AardwolfCore
         private bool _isSOD;
         private dataHandler _dataHandler;
         maphandler _mapData;
-        
 
         public int getLevels()
         {
