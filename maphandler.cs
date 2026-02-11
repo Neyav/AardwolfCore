@@ -85,6 +85,7 @@ namespace AardwolfCore
         private List<dynamicMapObject> dynamicMapObjects;
         private List<staticMapObject> staticMapObjects;
         private List<AnimatedActor> animatedActors;
+        private SystemActor _systemActor;
         private bool _isLoaded = false;
         private bool _isSoD = false;
         private int _mapHeight;
@@ -496,6 +497,7 @@ namespace AardwolfCore
             dynamicMapObjects = new List<dynamicMapObject>();
             staticMapObjects = new List<staticMapObject>();
             animatedActors = new List<AnimatedActor>();
+            _systemActor = new SystemActor(a_isSoD);
 
             _isSoD = a_isSoD;
             _mapHeight = 0;
