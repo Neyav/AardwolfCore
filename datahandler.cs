@@ -488,6 +488,13 @@ namespace AardwolfCore
             return bitmap;
         }
 
+        public bool isSpearOfDestinyData()
+        {
+            if (_isLoaded)
+                return _isSOD;
+            return false;
+        }
+
         public dataHandler()
         {
             _isLoaded = false;

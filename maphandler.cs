@@ -211,7 +211,7 @@ namespace AardwolfCore
                 default: return 0;  // Invalid spawn ID
             }
         }
-        public void spawnMapObject(int objNumber, int height, int width)
+        public void defineMapObject(int objNumber, int height, int width)
         {
             if (objNumber == 98) // It's a pushwall.
             {
@@ -502,6 +502,11 @@ namespace AardwolfCore
         public int getMapWidth()
         {
             return _mapWidth;
+        }
+
+        public bool isMapLoaded()
+        {
+            return _isLoaded;
         }
 
         public maphandler(bool a_isSoD)
