@@ -153,6 +153,18 @@ namespace AardwolfCore
                 _VGAGRAPH = System.IO.File.ReadAllBytes("VGAGRAPH.SOD");
                 _VSWAP = System.IO.File.ReadAllBytes("VSWAP.SOD");
             }
+            else if (gameDataType == gameDataType.BlakeStone)
+            {
+                _AUDIOHED = System.IO.File.ReadAllBytes("AUDIOHED.BS6");
+                _AUDIOT = System.IO.File.ReadAllBytes("AUDIOT.BS6");
+                _GAMEMAPS = System.IO.File.ReadAllBytes("MAPTEMP.BS6");
+                _MAPHEAD = System.IO.File.ReadAllBytes("MAPHEAD.BS6");
+                _VGADICT = System.IO.File.ReadAllBytes("VGADICT.BS6");
+                _VGAHEAD = System.IO.File.ReadAllBytes("VGAHEAD.BS6");
+                _VGAGRAPH = System.IO.File.ReadAllBytes("VGAGRAPH.BS6");
+                _VSWAP = System.IO.File.ReadAllBytes("VSWAP.BS6");
+                // Blake Sttone has extra data we're going to need to dig into.
+            }
             
             _isLoaded = true;
 
@@ -195,6 +207,9 @@ namespace AardwolfCore
         {
             int iterator = 0;
 
+            // Dynamically size the list of maps.
+            _mapOffsets = new Int32[_MAPHEAD.Length / 4];
+
             // Load all the _mapOffsets from the MAPHEAD file.
             // Grab the mapheader from _mapOffsets as we go, if it is valid, and dump it into
             // _mapDataHeaders. Use _MAPHEAD and _GAMEMAPS to do this.
@@ -206,7 +221,7 @@ namespace AardwolfCore
                 _mapOffsets[i / 4] = BitConverter.ToInt32(_MAPHEAD, i);
             }
 
-            while (_mapOffsets[iterator] != 0)
+            while (_mapOffsets[iterator] !>= 0)
             {
                 mapDataHeader localHeader = new mapDataHeader();
 
@@ -240,6 +255,7 @@ namespace AardwolfCore
                     localHeader.name[i] = Convert.ToChar(_GAMEMAPS[_mapOffsets[iterator] + 22 + i]);
                 }
                 string levelName = new string(localHeader.name);
+                Debug.WriteLine(levelName);
 
                 _mapDataHeaders.Add(localHeader);
                 iterator++;

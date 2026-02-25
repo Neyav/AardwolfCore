@@ -94,7 +94,7 @@ RGB(  8, 44, 44), RGB(  0, 41, 41), RGB(  0, 38, 38), RGB(  0, 35, 35), RGB(  0,
 RGB(  0, 31, 31), RGB(  0, 30, 30), RGB(  0, 29, 29), RGB(  0, 28, 28), RGB(  0, 27, 27),
 RGB( 38,  0, 34)";
             }
-            else if (gameDataType == gameDataType.Wolf3D)
+            else /*if (gameDataType == gameDataType.Wolf3D)*/
             {
                 _gamePalette = @"
 RGB(  0,  0,  0), RGB(  0,  0, 42), RGB(  0, 42,  0), RGB(  0, 42, 42), RGB( 42,  0,  0),
