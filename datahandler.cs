@@ -109,7 +109,7 @@ namespace AardwolfCore
 
         private void prefetchAndDecompressPlanes()
         {
-            IDdecompression decompressor = new IDdecompression(ref _MAPHEAD);
+            IDdecompression decompressor = new IDdecompression(ref _MAPHEAD, _VGADICT);
             bool isCarmackCompressed = false;
 
             if (_gameDataType == gameDataType.Wolf3D || _gameDataType == gameDataType.SpearOfDestiny)

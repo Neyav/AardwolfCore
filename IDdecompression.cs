@@ -18,6 +18,8 @@ namespace AardwolfCore
         byte topRLEWtag;
         byte bottomRLEWtag;
 
+        byte[] _VGADict;
+
         public byte[] RLEWDecompress(byte[] input)
         {
             List<byte> result = new List<byte>();
@@ -170,10 +172,12 @@ namespace AardwolfCore
             return output;
         }
 
-        public IDdecompression(ref byte[] aMapHead)
+        public IDdecompression(ref byte[] aMapHead, byte[] aVGADICT)
         {   // Grab the RWLEtag from the map header.
             topRLEWtag = aMapHead[0];
             bottomRLEWtag = aMapHead[1];
+
+            _VGADict = aVGADICT;
         }
     }
 
