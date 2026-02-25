@@ -10,7 +10,7 @@ namespace AardwolfCore
     {
         private int _mapnumber;
         private int _difficulty;
-        private bool _isSOD;
+        private gameDataType _gameDataType;
         private dataHandler _dataHandler;
         maphandler _mapData;
 
@@ -33,7 +33,7 @@ namespace AardwolfCore
             _mapnumber = level;
             _difficulty = difficulty;
 
-            _mapData = new maphandler(_isSOD);
+            _mapData = new maphandler(_gameDataType);
             _mapData.importMapData(_dataHandler.getLevelData(level), _dataHandler.levelHeight(level), _dataHandler.levelWidth(level));
 
             _mapnumber = level;
@@ -49,14 +49,14 @@ namespace AardwolfCore
         {
             return _dataHandler;
         }
-        public gamesession(bool isSOD)
+        public gamesession(gameDataType gameDataType)
         {
             this._mapnumber = 0;
             this._difficulty = 0;
-            this._isSOD = isSOD;
+            this._gameDataType = gameDataType;
 
             this._dataHandler = new dataHandler();
-            _dataHandler.loadAllData(_isSOD);
+            _dataHandler.loadAllData(_gameDataType);
 
             _dataHandler.parseLevelData();
             _dataHandler.prepareVSWAP();

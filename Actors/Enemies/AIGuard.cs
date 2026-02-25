@@ -21,7 +21,7 @@ namespace AardwolfCore.Actors.Enemies
 
             int grdSprStart = 50; // Default sprite start for guards
 
-            if (_isSoD)
+            if (_gameDataType == gameDataType.SpearOfDestiny)
             {
                 grdSprStart = 54;
             }

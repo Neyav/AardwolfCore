@@ -17,6 +17,6 @@ namespace AardwolfCore.Actors
         // This is static so it can be set globally for all actors.
         protected static int SkillSetting { get; set; }
 
-        protected static bool _isSoD; // Static variable to determine if the game is SOD (Spear of Destiny)
+        protected static gameDataType _gameDataType; // Static variable to determine if the game is SOD (Spear of Destiny)
     }
 }

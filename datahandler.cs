@@ -3,7 +3,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace AardwolfCore
-{    
+{
+    public enum gameDataType
+    {
+        Wolf3D,
+        SpearOfDestiny,
+        BlakeStone
+    }
+
     public struct mapDataHeader
     {
         public Int32 offPlane0;
@@ -94,7 +101,7 @@ namespace AardwolfCore
     };
 
         bool _isLoaded = false;
-        bool _isSOD = false;
+        gameDataType _gameDataType = gameDataType.Wolf3D;
 
         private void prefetchAndDecompressPlanes()
         {
@@ -117,14 +124,14 @@ namespace AardwolfCore
   
         }
 
-        public void loadAllData(bool isSOD)
+        public void loadAllData(gameDataType gameDataType)
         {
             if (_isLoaded)
                 return;
 
-            _isSOD = isSOD;
+            _gameDataType = gameDataType;
             // Load all of our files into the byte arrays
-            if (!_isSOD)
+            if (gameDataType == gameDataType.Wolf3D)
             {   // Grab the wolf3D data files.
                 _AUDIOHED = System.IO.File.ReadAllBytes("AUDIOHED.WL6");
                 _AUDIOT = System.IO.File.ReadAllBytes("AUDIOT.WL6");
@@ -135,7 +142,7 @@ namespace AardwolfCore
                 _VGAGRAPH = System.IO.File.ReadAllBytes("VGAGRAPH.WL6");
                 _VSWAP = System.IO.File.ReadAllBytes("VSWAP.WL6");
             }
-            else
+            else if (gameDataType == gameDataType.SpearOfDestiny)
             {
                 _AUDIOHED = System.IO.File.ReadAllBytes("AUDIOHED.SOD");
                 _AUDIOT = System.IO.File.ReadAllBytes("AUDIOT.SOD");
@@ -150,7 +157,7 @@ namespace AardwolfCore
             _isLoaded = true;
 
             // Initalize the palette translation handler.
-            palettehandler palette = new palettehandler(_isSOD);
+            palettehandler palette = new palettehandler(_gameDataType);
         }
 
         public byte[] getLevelData(int level)
@@ -285,21 +292,26 @@ namespace AardwolfCore
         {
             if (!_isLoaded)
                 return new RGBA();
-            if (level < 0 || level >= _vgaCeilingColoursWolf3D.Length && !_isSOD)
+            if (level < 0 || level >= _vgaCeilingColoursWolf3D.Length && _gameDataType == gameDataType.Wolf3D)
                 return new RGBA();
-            if (level < 0 || level >= _vgaCeilingColoursSoD.Length && _isSOD)
+            if (level < 0 || level >= _vgaCeilingColoursSoD.Length && _gameDataType == gameDataType.SpearOfDestiny)
                 return new RGBA();
 
             // If we're in SOD, use the SOD ceiling colours.
-            if (_isSOD)
+            if (_gameDataType == gameDataType.SpearOfDestiny)
             {
                 // Return the ceiling colour for the level.
                 return _paletteHandler.getPaletteColor((byte)_vgaCeilingColoursSoD[level]);
             }
-            else
+            else if (_gameDataType == gameDataType.Wolf3D)
             {
                 // Return the ceiling colour for the level.
                 return _paletteHandler.getPaletteColor((byte)_vgaCeilingColoursWolf3D[level]);
+            }
+            else
+            {
+                // Undefined game type?
+                return new RGBA();
             }
         }
 
@@ -488,17 +500,15 @@ namespace AardwolfCore
             return bitmap;
         }
 
-        public bool isSpearOfDestinyData()
+        public gameDataType returnGameDataType()
         {
-            if (_isLoaded)
-                return _isSOD;
-            return false;
+            return _gameDataType;
         }
 
         public dataHandler()
         {
             _isLoaded = false;
-            _isSOD = false;
+            _gameDataType = gameDataType.Wolf3D;
 
             _mapOffsets = new Int32[100];
 
@@ -509,7 +519,7 @@ namespace AardwolfCore
 
             _VSWAPHeader = new VSWAPHeader();
 
-            _paletteHandler = new palettehandler(false);
+            _paletteHandler = new palettehandler(_gameDataType);
 
             _levels = 0;
         }

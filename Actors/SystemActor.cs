@@ -10,11 +10,11 @@ namespace AardwolfCore.Actors
     // It will be responsibile for initalizing the event system and handling events.
     public class SystemActor : Actor
     {
-        public SystemActor(bool isSoD)
+        public SystemActor(gameDataType gameDataType)
         {
             // These statics being set here MEANS a systemActor must be created before any other actors are created.
 
-            _isSoD = isSoD;
+            _gameDataType = gameDataType;
             SkillSetting = 0; // Default skill setting, can be changed later
         }
     }

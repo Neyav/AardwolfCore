@@ -87,7 +87,7 @@ namespace AardwolfCore
         private List<AnimatedActor> animatedActors;
         private SystemActor _systemActor;
         private bool _isLoaded = false;
-        private bool _isSoD = false;
+        private gameDataType _gameDataType = gameDataType.Wolf3D;
         private int _mapHeight;
         private int _mapWidth;        
         public int playerSpawnHeight { get; private set; }
@@ -207,7 +207,7 @@ namespace AardwolfCore
                 playerSpawnHeight = height;
                 playerSpawnWidth = width;
             }
-            else if (objNumber >= 23 && (objNumber <= 70 || (_isSoD && objNumber <= 74)))
+            else if (objNumber >= 23 && (objNumber <= 70 || (_gameDataType == gameDataType.SpearOfDestiny && objNumber <= 74)))
             { // It's a static object.
                 staticMapObject newObject = new staticMapObject();
                 newObject.poswidth = width;
@@ -492,14 +492,14 @@ namespace AardwolfCore
             return _isLoaded;
         }
 
-        public maphandler(bool a_isSoD)
+        public maphandler(gameDataType gameDataType)
         {
             dynamicMapObjects = new List<dynamicMapObject>();
             staticMapObjects = new List<staticMapObject>();
             animatedActors = new List<AnimatedActor>();
-            _systemActor = new SystemActor(a_isSoD);
+            _systemActor = new SystemActor(gameDataType);
 
-            _isSoD = a_isSoD;
+            _gameDataType = gameDataType;
             _mapHeight = 0;
             _mapWidth = 0;
 
@@ -548,7 +548,7 @@ namespace AardwolfCore
             };
 
             // Add SoD specific objects.
-            if (_isSoD)
+            if (_gameDataType == gameDataType.SpearOfDestiny)
             {
                 staticObjectClassification.Add(38, staticObjectInteraction.OBJ_BLOCKING); // Gibs!
                 staticObjectClassification.Add(67, staticObjectInteraction.OBJ_BLOCKING); // Gibs!

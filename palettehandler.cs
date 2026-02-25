@@ -17,16 +17,16 @@
     }
     public class palettehandler
     {
-        string Wolf3Dpalette;
-        byte[] palette = new byte[256 * 3];
+        string _gamePalette;
+        byte[] _palette = new byte[256 * 3];
 
         public RGBA getPaletteColor(byte index)
         {
             RGBA result = new RGBA();
 
-            result.r = palette[index * 3];
-            result.g = palette[index * 3 + 1];
-            result.b = palette[index * 3 + 2];
+            result.r = _palette[index * 3];
+            result.g = _palette[index * 3 + 1];
+            result.b = _palette[index * 3 + 2];
 
             result.r *= 4;
             result.g *= 4;
@@ -34,13 +34,13 @@
 
             return result;
         }
-        public palettehandler(bool _isSoD) 
+        public palettehandler(gameDataType gameDataType) 
         {
             // Preload the palette into memory.
             // Stole this from https://github.com/HiPhish/Wolf3DExtract/blob/master/Source/palette/wolfenstein_palette.h
-            if (_isSoD)
+            if (gameDataType == gameDataType.SpearOfDestiny)
             {
-                Wolf3Dpalette = @"
+                _gamePalette = @"
 RGB(  0,  0,  0), RGB(  0,  0, 42), RGB(  0, 42,  0), RGB(  0, 42, 42), RGB( 42,  0,  0),
 RGB( 42,  0, 42), RGB( 42, 21,  0), RGB( 42, 42, 42), RGB( 21, 21, 21), RGB( 21, 21, 63),
 RGB( 21, 63, 21), RGB( 21, 63, 63), RGB( 63, 21, 21), RGB( 63, 21, 63), RGB( 63, 63, 21),
@@ -94,9 +94,9 @@ RGB(  8, 44, 44), RGB(  0, 41, 41), RGB(  0, 38, 38), RGB(  0, 35, 35), RGB(  0,
 RGB(  0, 31, 31), RGB(  0, 30, 30), RGB(  0, 29, 29), RGB(  0, 28, 28), RGB(  0, 27, 27),
 RGB( 38,  0, 34)";
             }
-            else
+            else if (gameDataType == gameDataType.Wolf3D)
             {
-                Wolf3Dpalette = @"
+                _gamePalette = @"
 RGB(  0,  0,  0), RGB(  0,  0, 42), RGB(  0, 42,  0), RGB(  0, 42, 42), RGB( 42,  0,  0),
 RGB( 42,  0, 42), RGB( 42, 21,  0), RGB( 42, 42, 42), RGB( 21, 21, 21), RGB( 21, 21, 63),
 RGB( 21, 63, 21), RGB( 21, 63, 63), RGB( 63, 21, 21), RGB( 63, 21, 63), RGB( 63, 63, 21),
@@ -155,17 +155,17 @@ RGB( 38,  0, 34)";
             // Each RGB( 0,  0,  0) is 3 bytes, so we need to split the string into 3 byte chunks.
 
             // First, we need to remove the RGB( and ) from the string.
-            Wolf3Dpalette = Wolf3Dpalette.Replace("RGB(", "");
-            Wolf3Dpalette = Wolf3Dpalette.Replace(")", "");
+            _gamePalette = _gamePalette.Replace("RGB(", "");
+            _gamePalette = _gamePalette.Replace(")", "");
 
             // Now we need to split the string into 3 byte chunks.
-            string[] palettechunks = Wolf3Dpalette.Split(',');
+            string[] palettechunks = _gamePalette.Split(',');
             int paletteiterator = 0;
 
             // Now we need to convert the string chunks into bytes.
             foreach (string chunk in palettechunks)
             {
-                palette[paletteiterator] = Convert.ToByte(chunk);
+                _palette[paletteiterator] = Convert.ToByte(chunk);
                 paletteiterator++;
             }
         }
