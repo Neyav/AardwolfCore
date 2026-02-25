@@ -106,6 +106,12 @@ namespace AardwolfCore
         private void prefetchAndDecompressPlanes()
         {
             IDdecompression decompressor = new IDdecompression(ref _MAPHEAD);
+            bool isCarmackCompressed = false;
+
+            if (_gameDataType == gameDataType.Wolf3D || _gameDataType == gameDataType.SpearOfDestiny)
+            {
+                isCarmackCompressed = true;
+            }
 
             for (int i = 0; i < _levels; i++)
             {
@@ -117,9 +123,18 @@ namespace AardwolfCore
                 localPlane1 = _GAMEMAPS.Skip(_mapDataHeaders[i].offPlane1).Take((int)_mapDataHeaders[i].lenPlane1).ToArray();
                 localPlane2 = _GAMEMAPS.Skip(_mapDataHeaders[i].offPlane2).Take((int)_mapDataHeaders[i].lenPlane2).ToArray();
 
-                _mapData_offPlane0.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane0)));
-                _mapData_offPlane1.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane1)));
-                _mapData_offPlane2.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane2)));
+                if (isCarmackCompressed)
+                {
+                    _mapData_offPlane0.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane0)));
+                    _mapData_offPlane1.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane1)));
+                    _mapData_offPlane2.Add(decompressor.RLEWDecompress(decompressor.CarmackDecompress(localPlane2)));
+                }
+                else
+                {
+                    _mapData_offPlane0.Add(decompressor.RLEWDecompress(localPlane0));
+                    _mapData_offPlane1.Add(decompressor.RLEWDecompress(localPlane1));
+                    _mapData_offPlane2.Add(decompressor.RLEWDecompress(localPlane2));
+                }
             }
   
         }
@@ -221,7 +236,7 @@ namespace AardwolfCore
                 _mapOffsets[i / 4] = BitConverter.ToInt32(_MAPHEAD, i);
             }
 
-            while (_mapOffsets[iterator] !>= 0)
+            while (_mapOffsets[iterator] > 0)
             {
                 mapDataHeader localHeader = new mapDataHeader();
 
