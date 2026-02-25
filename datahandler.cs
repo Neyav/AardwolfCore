@@ -377,30 +377,6 @@ namespace AardwolfCore
             }
         }
 
-        private bool HasRepeatedTriples(byte[] data)
-        {
-            HashSet<int> seen = new HashSet<int>();
-
-            for (int i = 0; i < data.Length; i += 3)
-            {
-                int rgb = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
-
-                if (!seen.Add(rgb))
-                    return true; // repeated triple found
-            }
-
-            return false; // all triples unique
-        }
-
-        private bool ContainsValuesOver63(byte[] data)
-        {
-            for (int i = 0; i < data.Length; i++)
-                if (data[i] > 63)
-                    return true;
-
-            return false;
-        }
-
         private void prepareVGAGRAPH()
         {
             // VGAHEAD is a list of 3-byte little-endian offsets
@@ -423,45 +399,7 @@ namespace AardwolfCore
                 Debug.WriteLine($"VGAHEAD Offset {i}: {offset}");
             }
 
-            for (int i = 0; i < _numvgaHeadOffsets - 1; i++)
-            {
-                int start = _vgaHeadOffsets[i];
-                int end = _vgaHeadOffsets[i + 1];
-                int size = end - start;
-
-                // Read first two bytes of the chunk
-                ushort expanded = BitConverter.ToUInt16(_VGAGRAPH, start);
-
-                if (expanded == 768)
-                {
-                    IDdecompression decompressor = new IDdecompression(ref _MAPHEAD);
-                    Debug.WriteLine($"Palette chunk candidate at index {i}, raw size={size}");
-
-                    // Extract raw chunk
-                    byte[] raw = new byte[size];
-                    Buffer.BlockCopy(_VGAGRAPH, start, raw, 0, size);
-
-                    // Decompress (Carmack + RLEW)
-                    byte[] partialdecompressed = decompressor.CarmackDecompress(raw);
-                    byte[] decompressed = decompressor.RLEWDecompress(partialdecompressed);
-
-                    // Check for repeated RGB triples
-                    bool repeated = HasRepeatedTriples(decompressed);
-
-                    Debug.WriteLine($"Chunk {i}: repeated triples = {repeated}");
-
-                    if (!repeated)
-                    {
-                        bool notpaletteChunk = ContainsValuesOver63(decompressed);
-
-                        if (!notpaletteChunk)
-                            Debug.WriteLine($"Chunk {i}: Has no values over 63, potentially a palette chunk");
-                    }
-                }
-
-            }
         }
-
 
         public VSWAPHeader getVSWAPHeader
         {
