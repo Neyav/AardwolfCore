@@ -27,7 +27,7 @@ namespace AardwolfCore
             // final uncompressed size. Since we're here in C# fancy pants land, we can just grab the length of the input array.
             int inputIterator = 2;
 
-            while (inputIterator < input.Length)
+            while (inputIterator < input.Length - 1)
             {
                 byte topinput = input[inputIterator];
                 byte bottominput = input[inputIterator + 1];
@@ -73,7 +73,7 @@ namespace AardwolfCore
 
             // Original source uses length/2 to do this, and subtracts from length everytime a WORD (2 bytes)
             // is passed. We're going to use the length of the input array instead as we easily have access to it.
-            while (inputIterator < input.Length)
+            while (inputIterator < input.Length - 1)
             {
                 // Grab two bytes, topend and bottomend in sequence.
                 byte topend = input[inputIterator];
@@ -97,6 +97,12 @@ namespace AardwolfCore
                         int offset = input[inputIterator]; // The offset (in words) to copy from.
                         inputIterator++;
                         offset *= 2; // We multiply by two because we're dealing with bytes, not words.
+
+                        // Validate the offset makes sense, we might chuck data in here to SEE if it's compressed this way.
+                        if (offset > result.Count() || offset < 0)
+                        {
+                            return new byte[0]; // Return an effective null.
+                        }
 
                         while (count > 0)
                         {   // We copy the words, count times, from the offset.
@@ -129,6 +135,12 @@ namespace AardwolfCore
                         inputIterator += 2;
 
                         Int16 offset = (Int16)(offsetbottom * 256 + offsettop);
+
+                        // Validate the offset makes sense, we might chuck data in here to SEE if it's compressed this way.
+                        if (offset > result.Count() || offset < 0)
+                        {
+                            return new byte[0]; // Return an effective null.
+                        }
 
                         offset *= 2;
 

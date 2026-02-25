@@ -59,7 +59,6 @@ namespace AardwolfCore
             _dataHandler.loadAllData(_gameDataType);
 
             _dataHandler.parseLevelData();
-            _dataHandler.prepareVSWAP();
 
             _mapData = null;
         }

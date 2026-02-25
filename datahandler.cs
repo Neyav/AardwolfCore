@@ -80,6 +80,10 @@ namespace AardwolfCore
         // VSWAP data
         VSWAPHeader _VSWAPHeader;
 
+        // VGAHEAD offsets
+        Int32 _numvgaHeadOffsets;
+        Int32[] _vgaHeadOffsets;
+
         // Palette translation handler.
         palettehandler _paletteHandler;
         int[] _vgaCeilingColoursWolf3D = {
@@ -183,6 +187,9 @@ namespace AardwolfCore
             
             _isLoaded = true;
 
+            prepareVSWAP();
+            prepareVGAGRAPH();
+
             // Initalize the palette translation handler.
             palettehandler palette = new palettehandler(_gameDataType);
         }
@@ -270,7 +277,6 @@ namespace AardwolfCore
                     localHeader.name[i] = Convert.ToChar(_GAMEMAPS[_mapOffsets[iterator] + 22 + i]);
                 }
                 string levelName = new string(localHeader.name);
-                Debug.WriteLine(levelName);
 
                 _mapDataHeaders.Add(localHeader);
                 iterator++;
@@ -355,7 +361,7 @@ namespace AardwolfCore
             return _VSWAPHeader.spriteStart - 8;
         }
 
-        public void prepareVSWAP()
+        private void prepareVSWAP()
         {
             _VSWAPHeader.chunkCount = BitConverter.ToUInt16(_VSWAP, 0);
             _VSWAPHeader.spriteStart = BitConverter.ToUInt16(_VSWAP, 2);
@@ -370,6 +376,92 @@ namespace AardwolfCore
                 _VSWAPHeader.chunkLengths[i] = BitConverter.ToUInt16(_VSWAP, 6 + (_VSWAPHeader.chunkCount * 4) + (i * 2));
             }
         }
+
+        private bool HasRepeatedTriples(byte[] data)
+        {
+            HashSet<int> seen = new HashSet<int>();
+
+            for (int i = 0; i < data.Length; i += 3)
+            {
+                int rgb = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
+
+                if (!seen.Add(rgb))
+                    return true; // repeated triple found
+            }
+
+            return false; // all triples unique
+        }
+
+        private bool ContainsValuesOver63(byte[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+                if (data[i] > 63)
+                    return true;
+
+            return false;
+        }
+
+        private void prepareVGAGRAPH()
+        {
+            // VGAHEAD is a list of 3-byte little-endian offsets
+            _numvgaHeadOffsets = _VGAHEAD.Length / 3;
+            _vgaHeadOffsets = new int[_numvgaHeadOffsets];
+
+            Debug.WriteLine("Number of VGAHEAD Offsets: " + _numvgaHeadOffsets);
+
+            for (int i = 0; i < _numvgaHeadOffsets; i++)
+            {
+                int index = i * 3;
+
+                int offset =
+                    _VGAHEAD[index + 0] |
+                    (_VGAHEAD[index + 1] << 8) |
+                    (_VGAHEAD[index + 2] << 16);
+
+                _vgaHeadOffsets[i] = offset;
+
+                Debug.WriteLine($"VGAHEAD Offset {i}: {offset}");
+            }
+
+            for (int i = 0; i < _numvgaHeadOffsets - 1; i++)
+            {
+                int start = _vgaHeadOffsets[i];
+                int end = _vgaHeadOffsets[i + 1];
+                int size = end - start;
+
+                // Read first two bytes of the chunk
+                ushort expanded = BitConverter.ToUInt16(_VGAGRAPH, start);
+
+                if (expanded == 768)
+                {
+                    IDdecompression decompressor = new IDdecompression(ref _MAPHEAD);
+                    Debug.WriteLine($"Palette chunk candidate at index {i}, raw size={size}");
+
+                    // Extract raw chunk
+                    byte[] raw = new byte[size];
+                    Buffer.BlockCopy(_VGAGRAPH, start, raw, 0, size);
+
+                    // Decompress (Carmack + RLEW)
+                    byte[] partialdecompressed = decompressor.CarmackDecompress(raw);
+                    byte[] decompressed = decompressor.RLEWDecompress(partialdecompressed);
+
+                    // Check for repeated RGB triples
+                    bool repeated = HasRepeatedTriples(decompressed);
+
+                    Debug.WriteLine($"Chunk {i}: repeated triples = {repeated}");
+
+                    if (!repeated)
+                    {
+                        bool notpaletteChunk = ContainsValuesOver63(decompressed);
+
+                        if (!notpaletteChunk)
+                            Debug.WriteLine($"Chunk {i}: Has no values over 63, potentially a palette chunk");
+                    }
+                }
+
+            }
+        }
+
 
         public VSWAPHeader getVSWAPHeader
         {
@@ -549,6 +641,9 @@ namespace AardwolfCore
             _mapData_offPlane2 = new List<byte[]>();
 
             _VSWAPHeader = new VSWAPHeader();
+
+            _numvgaHeadOffsets = 0;
+            _vgaHeadOffsets = new Int32[100];
 
             _paletteHandler = new palettehandler(_gameDataType);
 
