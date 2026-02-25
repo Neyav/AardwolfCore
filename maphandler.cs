@@ -291,6 +291,58 @@ namespace AardwolfCore
                         animatedActors.Add(newActor);
                         break;
 
+
+                    // --= Doggies =-- //
+                    case 206: // Hard Skill Doogger.
+                    case 207:
+                    case 208:
+                    case 209:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 206));
+                        animatedActors.Add(newActor);
+                        break;
+
+                    case 170: // Medium Skill Doggieees
+                    case 171:
+                    case 172:
+                    case 173:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 170));
+                        animatedActors.Add(newActor);
+                        break;
+
+                    case 134: // Easy Skill Doggieees
+                    case 135:
+                    case 136:
+                    case 137:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 134));
+                        animatedActors.Add(newActor);
+                        break;
+
+                    // This appears to be for patrol dooggerrs, but I thought all dawgnos patrolled all the time? I'll have to check.
+
+                    case 210: // Hard Skill Lassie.
+                    case 211:
+                    case 212:
+                    case 213:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 206));
+                        animatedActors.Add(newActor);
+                        break;
+
+                    case 174: // Medium Skill John Wick's dogggnesss
+                    case 175:
+                    case 176:
+                    case 177:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 170));
+                        animatedActors.Add(newActor);
+                        break;
+
+                    case 138: // Easy Skill John Wick's dead dawgner. :(
+                    case 139:
+                    case 140:
+                    case 141:
+                        newActor = new AIDog(width, height, angleFromSpawnID(objNumber - 134));
+                        animatedActors.Add(newActor);
+                        break;
+
                     default:
                         break;
                 }
